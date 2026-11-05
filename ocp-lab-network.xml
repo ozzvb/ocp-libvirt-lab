@@ -1,0 +1,23 @@
+<network xmlns:dnsmasq='http://libvirt.org/schemas/network/dnsmasq/1.0'>
+  <name>ocp-lab</name>
+  <forward mode='nat'/>
+  <bridge name='virbr50' stp='on' delay='0'/>
+  <domain name='ocp.lab.test' localOnly='yes'/>
+  <dns>
+    <host ip='192.168.150.20'>
+      <hostname>api.ocp.lab.test</hostname>
+      <hostname>api-int.ocp.lab.test</hostname>
+    </host>
+  </dns>
+  <ip address='192.168.150.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.150.100' end='192.168.150.199'/>
+      <host mac='52:54:00:15:00:11' name='ocp-01' ip='192.168.150.11'/>
+      <host mac='52:54:00:15:00:12' name='ocp-02' ip='192.168.150.12'/>
+      <host mac='52:54:00:15:00:13' name='ocp-03' ip='192.168.150.13'/>
+    </dhcp>
+  </ip>
+  <dnsmasq:options>
+    <dnsmasq:option value='address=/apps.ocp.lab.test/192.168.150.21'/>
+  </dnsmasq:options>
+</network>
