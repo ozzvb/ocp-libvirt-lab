@@ -36,7 +36,7 @@ case "${1:-help}" in
       "${VIRSH[@]}" net-define "$HERE/ocp-lab-network.xml"
     fi
     "${VIRSH[@]}" net-autostart "$NETWORK_NAME"
-    if ! "${VIRSH[@]}" net-info "$NETWORK_NAME" | grep -Eq '^Active:[[:space:]]+yes'; then
+    if ! "${VIRSH[@]}" net-info "$NETWORK_NAME" | grep -E '^Active:[[:space:]]+yes'; then
       "${VIRSH[@]}" net-start "$NETWORK_NAME"
     fi
     "${VIRSH[@]}" net-info "$NETWORK_NAME"
@@ -49,7 +49,7 @@ case "${1:-help}" in
       echo 'Uso: ./provision-ocp-lab.sh vms /ruta/a/discovery.iso' >&2
       exit 2
     fi
-    if ! "${VIRSH[@]}" net-info "$NETWORK_NAME" | grep -Eq '^Active:[[:space:]]+yes'; then
+    if ! "${VIRSH[@]}" net-info "$NETWORK_NAME" | grep -E '^Active:[[:space:]]+yes'; then
       echo "La red $NETWORK_NAME debe estar activa. Ejecute primero: $0 network" >&2
       exit 3
     fi
@@ -81,7 +81,7 @@ case "${1:-help}" in
         --vcpus 4 \
         --cpu host-passthrough \
         --machine q35 \
-        --boot uefi,secure-boot=off,cdrom,hd \
+        --boot uefi,cdrom,hd \
         --os-variant generic \
         --disk "path=$disk,format=qcow2,bus=virtio" \
         --network "network=$NETWORK_NAME,model=virtio,mac=$mac" \
